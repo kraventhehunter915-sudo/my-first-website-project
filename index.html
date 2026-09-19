@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolNest — Free Online Tools for Everyone</title>
+  <meta name="description" content="Free online tools: word counter, password generator, JSON formatter, Base64 encoder, case converter, URL encoder, and more. No signup required.">
+  <meta name="keywords" content="free online tools, word counter, password generator, JSON formatter, base64 encoder, case converter, url encoder">
+  <meta property="og:title" content="ToolNest — Free Online Tools">
+  <meta property="og:description" content="Quick, free tools for everyday tasks. No signup required. Tools run in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://satyadev.github.io/toolnest/">
+
+  <!-- AdSense: after Google approves this site, replace YOUR_ID and uncomment.
+       Also update ads.txt. See ADSENSE.md. Do not click your own ads.
+       During application, paste Google’s verification meta/script here if they provide one. -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ID" crossorigin="anonymous"></script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #16181c;
+      --surface2: #1e2026;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.16);
+      --text: #e8e9eb;
+      --muted: #7a7d85;
+      --accent: #7cffc4;
+      --accent2: #5b8cff;
+      --accent3: #ff7c7c;
+      --warn: #ffc96e;
+      --font-sans: 'Sora', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --r: 10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,15,17,0.92);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; max-width: 1080px; margin: 0 auto; gap: 16px;
+    }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .tag { font-size: 11px; background: rgba(124,255,196,0.12); color: var(--accent); border: 1px solid rgba(124,255,196,0.2); padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+
+    .ad-slot { margin: 16px 0; min-height: 0; }
+
+    .hero {
+      padding: 56px 20px 28px;
+      max-width: 1080px; margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 15px; max-width: 540px; }
+
+    .filters {
+      max-width: 1080px; margin: 0 auto; padding: 0 20px 24px;
+    }
+    .search-wrap { margin-bottom: 14px; }
+    #tool-search {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: var(--font-sans);
+      font-size: 14px; padding: 12px 14px; outline: none;
+    }
+    #tool-search:focus { border-color: var(--border-hover); }
+    .cat-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      font-size: 13px; padding: 6px 14px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+      background: transparent; cursor: pointer; font-family: var(--font-sans);
+      transition: all 0.15s;
+    }
+    .chip:hover { border-color: var(--border-hover); color: var(--text); }
+    .chip.active { border-color: var(--accent); color: var(--accent); background: rgba(124,255,196,0.07); }
+
+    .catalog {
+      max-width: 1080px; margin: 0 auto; padding: 0 20px 60px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px;
+    }
+    .catalog-card {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px; transition: border-color 0.15s, transform 0.15s;
+    }
+    .catalog-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+    .cat-badge {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--accent2); font-weight: 600;
+    }
+    .catalog-card h3 { font-size: 15px; font-weight: 600; margin: 8px 0 6px; }
+    .catalog-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .catalog-empty { grid-column: 1 / -1; color: var(--muted); padding: 32px 0; text-align: center; }
+
+    .main-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 20px 20px 60px;
+      display: grid; grid-template-columns: 1fr 280px; gap: 28px;
+    }
+    @media (max-width: 720px) { .main-wrap { grid-template-columns: 1fr; } .sidebar { display: none; } .tag { display: none; } }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 14px;
+    }
+    .back-link:hover { color: var(--text); }
+
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px; margin-bottom: 20px;
+      scroll-margin-top: 72px;
+    }
+    .tool-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .tool-card .tool-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+    textarea, input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], select {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: var(--font-mono);
+      font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
+      transition: border-color 0.15s;
+    }
+    textarea:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus,
+    input[type="datetime-local"]:focus, select:focus {
+      border-color: var(--border-hover);
+    }
+    textarea { min-height: 110px; }
+    input[type="file"] { font-size: 13px; color: var(--muted); font-family: var(--font-sans); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text); font-family: var(--font-sans);
+      font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+    }
+    .btn:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+    .btn.primary { background: var(--accent); color: #0e0f11; border-color: var(--accent); }
+    .btn.primary:hover { opacity: 0.9; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+    .output-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px; font-family: var(--font-mono);
+      font-size: 13px; min-height: 48px; word-break: break-all;
+      white-space: pre-wrap; margin-top: 12px; color: var(--accent);
+    }
+
+    .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .stat-pill {
+      font-size: 12px; font-family: var(--font-mono);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      color: var(--muted);
+    }
+    .stat-pill span { color: var(--accent2); font-weight: 500; }
+
+    input[type="range"] {
+      width: 100%; accent-color: var(--accent);
+      background: transparent; height: 4px; margin: 8px 0;
+    }
+
+    .strength-bar { height: 4px; border-radius: 2px; margin-top: 8px; background: var(--border); overflow: hidden; }
+    .strength-fill { height: 100%; border-radius: 2px; transition: all 0.3s; }
+
+    .check-group { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0; }
+    .check-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; }
+    .check-group input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
+
+    .color-preview { width: 100%; height: 80px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; background: #5b8cff; transition: background 0.2s; }
+    input[type="color"] { width: 52px; height: 38px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); cursor: pointer; padding: 2px; }
+
+    .field-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 12px; }
+    .field { flex: 1; min-width: 120px; }
+    .field label, .field-label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .preview-box { border-radius: 8px; border: 1px solid var(--border); min-height: 80px; margin-top: 12px; }
+    .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .swatch { width: 72px; height: 72px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+    img.preview-img { max-width: 100%; border-radius: 8px; margin-top: 12px; display: block; }
+
+    .sidebar { position: sticky; top: 80px; align-self: start; }
+    .sidebar-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 16px; }
+    .sidebar-box h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+    .tip { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .tip + .tip { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .tip strong { color: var(--text); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 20px;
+      text-align: center; color: var(--muted); font-size: 13px;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--accent); color: #0e0f11;
+      padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none;
+      z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    .hidden { display: none !important; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo" id="logo-home">
+      <span class="logo-dot"></span>ToolNest
+    </a>
+    <span class="tag">100% Free · No Signup</span>
+  </div>
+</header>
+
+<div id="view-home">
+  <div class="hero">
+    <h1>Free tools.<br><span>No noise.</span></h1>
+    <p>Quick utilities for writers, developers, and everyday tasks. Works instantly in your browser — nothing is sent to any server.</p>
+  </div>
+
+  <div class="filters">
+    <div class="search-wrap">
+      <input type="text" id="tool-search" placeholder="Search tools…" autocomplete="off">
+    </div>
+    <div class="cat-chips" id="cat-chips"></div>
+  </div>
+
+  <div class="catalog" id="catalog"></div>
+</div>
+
+<div id="view-tool" class="hidden">
+  <div class="main-wrap">
+    <main>
+      <a href="#" class="back-link" id="back-home">← All tools</a>
+      <div id="tool-root"></div>
+      <!-- After approval: one in-content unit. Replace YOUR_ID and YOUR_SLOT.
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR_ID"
+             data-ad-slot="YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      -->
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <h3>Quick tips</h3>
+        <div id="tool-tips"></div>
+      </div>
+      <!-- After approval: one sidebar unit.
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR_ID"
+             data-ad-slot="YOUR_SLOT_SIDEBAR" data-ad-format="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      -->
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 ToolNest &nbsp;·&nbsp; <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="about.html">About</a> &nbsp;·&nbsp; <a href="contact.html">Contact</a></p>
+  <p style="margin-top:6px">All tools run in your browser. No data is stored or transmitted.</p>
+</footer>
+
+<div id="toast">Copied!</div>
+
+<script src="js/tools.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
