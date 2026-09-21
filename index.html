@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolNest — Free Online Tools for Everyone</title>
+  <meta name="description" content="Free online tools: word counter, password generator, JSON formatter, Base64 encoder, case converter, URL encoder, and more. No signup required.">
+  <meta name="keywords" content="free online tools, word counter, password generator, JSON formatter, base64 encoder, case converter, url encoder">
+  <meta property="og:title" content="ToolNest — Free Online Tools">
+  <meta property="og:description" content="Quick, free tools for everyday tasks. No signup required. Tools run in your browser.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://satyadev.github.io/toolnest/">
+
+  <!-- AdSense: after Google approves this site, replace YOUR_ID and uncomment.
+       Also update ads.txt. See ADSENSE.md. Do not click your own ads.
+       During application, paste Google’s verification meta/script here if they provide one. -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ID" crossorigin="anonymous"></script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #16181c;
+      --surface2: #1e2026;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.16);
+      --text: #e8e9eb;
+      --muted: #7a7d85;
+      --accent: #7cffc4;
+      --accent2: #5b8cff;
+      --accent3: #ff7c7c;
+      --warn: #ffc96e;
+      --font-sans: 'Sora', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --r: 10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,15,17,0.92);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; max-width: 1080px; margin: 0 auto; gap: 16px;
+    }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .tag { font-size: 11px; background: rgba(124,255,196,0.12); color: var(--accent); border: 1px solid rgba(124,255,196,0.2); padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+
+    .ad-slot { margin: 16px 0; min-height: 0; }
+
+    .hero {
+      padding: 56px 20px 28px;
+      max-width: 1080px; margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 15px; max-width: 540px; }
+
+    .filters {
+      max-width: 1080px; margin: 0 auto; padding: 0 20px 24px;
+    }
+    .search-wrap { margin-bottom: 14px; }
+    #tool-search {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: var(--font-sans);
+      font-size: 14px; padding: 12px 14px; outline: none;
+    }
+    #tool-search:focus { border-color: var(--border-hover); }
+    .cat-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      font-size: 13px; padding: 6px 14px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+      background: transparent; cursor: pointer; font-family: var(--font-sans);
+      transition: all 0.15s;
+    }
+    .chip:hover { border-color: var(--border-hover); color: var(--text); }
+    .chip.active { border-color: var(--accent); color: var(--accent); background: rgba(124,255,196,0.07); }
+
+    .catalog {
+      max-width: 1080px; margin: 0 auto; padding: 0 20px 60px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px;
+    }
+    .catalog-card {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px; transition: border-color 0.15s, transform 0.15s;
+    }
+    .catalog-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+    .cat-badge {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--accent2); font-weight: 600;
+    }
+    .catalog-card h3 { font-size: 15px; font-weight: 600; margin: 8px 0 6px; }
+    .catalog-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .catalog-empty { grid-column: 1 / -1; color: var(--muted); padding: 32px 0; text-align: center; }
+
+    .section-heading {
+      max-width: 1080px; margin: 0 auto; padding: 0 20px 14px;
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    }
+    .section-heading h2 { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
+    .section-heading p { color: var(--muted); font-size: 12px; }
+
+    .main-wrap {
+      max-width: 1080px; margin: 0 auto; padding: 20px 20px 60px;
+      display: grid; grid-template-columns: 1fr 280px; gap: 28px;
+    }
+    @media (max-width: 720px) { .main-wrap { grid-template-columns: 1fr; } .sidebar { display: none; } .tag { display: none; } }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 14px;
+    }
+    .back-link:hover { color: var(--text); }
+
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px; margin-bottom: 20px;
+      scroll-margin-top: 72px;
+    }
+    .tool-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .tool-card .tool-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+
+    textarea, input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], select {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-family: var(--font-mono);
+      font-size: 13px; padding: 10px 12px; outline: none; resize: vertical;
+      transition: border-color 0.15s;
+    }
+    textarea:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus,
+    input[type="datetime-local"]:focus, select:focus {
+      border-color: var(--border-hover);
+    }
+    textarea { min-height: 110px; }
+    input[type="file"] { font-size: 13px; color: var(--muted); font-family: var(--font-sans); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface2); color: var(--text); font-family: var(--font-sans);
+      font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s;
+    }
+    .btn:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+    .btn.primary { background: var(--accent); color: #0e0f11; border-color: var(--accent); }
+    .btn.primary:hover { opacity: 0.9; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+    .output-box {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px; font-family: var(--font-mono);
+      font-size: 13px; min-height: 48px; word-break: break-all;
+      white-space: pre-wrap; margin-top: 12px; color: var(--accent);
+    }
+
+    .stats-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .stat-pill {
+      font-size: 12px; font-family: var(--font-mono);
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      color: var(--muted);
+    }
+    .stat-pill span { color: var(--accent2); font-weight: 500; }
+
+    input[type="range"] {
+      width: 100%; accent-color: var(--accent);
+      background: transparent; height: 4px; margin: 8px 0;
+    }
+
+    .strength-bar { height: 4px; border-radius: 2px; margin-top: 8px; background: var(--border); overflow: hidden; }
+    .strength-fill { height: 100%; border-radius: 2px; transition: all 0.3s; }
+
+    .check-group { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0; }
+    .check-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; }
+    .check-group input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
+
+    .color-preview { width: 100%; height: 80px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; background: #5b8cff; transition: background 0.2s; }
+    input[type="color"] { width: 52px; height: 38px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface2); cursor: pointer; padding: 2px; }
+
+    .field-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 12px; }
+    .field { flex: 1; min-width: 120px; }
+    .field label, .field-label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .preview-box { border-radius: 8px; border: 1px solid var(--border); min-height: 80px; margin-top: 12px; }
+    .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .swatch { width: 72px; height: 72px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+    img.preview-img { max-width: 100%; border-radius: 8px; margin-top: 12px; display: block; }
+
+    .sidebar { position: sticky; top: 80px; align-self: start; }
+    .sidebar-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 16px; }
+    .sidebar-box h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+    .tip { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .tip + .tip { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .tip strong { color: var(--text); }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 20px;
+      text-align: center; color: var(--muted); font-size: 13px;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--accent); color: #0e0f11;
+      padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none;
+      z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    .hidden { display: none !important; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo" id="logo-home">
+      <span class="logo-dot"></span>ToolNest
+    </a>
+    <span class="tag">100% Free · No Signup</span>
+  </div>
+</header>
+
+<div id="view-home">
+  <div class="hero">
+    <h1>Free tools.<br><span>No noise.</span></h1>
+    <p>Quick utilities for writers, developers, and everyday tasks. Works instantly in your browser — nothing is sent to any server.</p>
+  </div>
+
+  <div class="filters">
+    <div class="search-wrap">
+      <input type="text" id="tool-search" placeholder="Search tools…" autocomplete="off">
+    </div>
+    <div class="cat-chips" id="cat-chips"></div>
+  </div>
+
+  <div class="section-heading">
+    <h2>All tools</h2>
+    <p>Search or browse by category</p>
+  </div>
+  <div class="catalog" id="catalog"></div>
+</div>
+
+<div id="view-tool" class="hidden">
+  <div class="main-wrap">
+    <main>
+      <a href="#" class="back-link" id="back-home">← All tools</a>
+      <div id="tool-root"></div>
+      <!-- After approval: one in-content unit. Replace YOUR_ID and YOUR_SLOT.
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR_ID"
+             data-ad-slot="YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      -->
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-box">
+        <h3>Quick tips</h3>
+        <div id="tool-tips"></div>
+      </div>
+      <!-- After approval: one sidebar unit.
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR_ID"
+             data-ad-slot="YOUR_SLOT_SIDEBAR" data-ad-format="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      -->
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 ToolNest &nbsp;·&nbsp; <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="about.html">About</a> &nbsp;·&nbsp; <a href="contact.html">Contact</a></p>
+  <p style="margin-top:6px">All tools run in your browser. No data is stored or transmitted.</p>
+</footer>
+
+<div id="toast">Copied!</div>
+
+<script>
+(() => {
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const card = (title, desc, body) => `<section class="tool-card"><h2>${title}</h2><p class="tool-desc">${desc}</p>${body}</section>`;
+  const out = id => `<div class="output-box" id="${id}"></div>`;
+  const listen = (id, ev, fn) => document.getElementById(id)?.addEventListener(ev, fn);
+  const copy = (button, target) => listen(button, 'click', () => { const el = document.getElementById(target); navigator.clipboard?.writeText(el?.value ?? el?.textContent ?? ''); window.ToolNest.showToast('Copied to clipboard'); });
+  const tools = [
+    {id:'word-counter',name:'Word & Character Counter',category:'Writing',description:'Count words, characters, lines, sentences, and reading time.',tips:['Counts update as you type.','Reading time uses 200 words per minute.'],render(){return{html:card('Word & Character Counter','Count words, characters, lines, sentences, and estimated reading time.',`<textarea id="wc" placeholder="Start typing or paste text here…"></textarea><div class="stats-row" id="wc-stats"></div>`),init(){const update=()=>{const v=document.getElementById('wc').value,w=v.trim()?v.trim().split(/\s+/).length:0;document.getElementById('wc-stats').innerHTML=[['Words',w],['Characters',v.length],['No spaces',v.replace(/\s/g,'').length],['Lines',v?v.split('\n').length:0],['Sentences',(v.match(/[.!?]+(?=\s|$)/g)||[]).length],['Read time',`${Math.ceil(w/200)} min`]].map(x=>`<div class="stat-pill">${x[0]}: <span>${x[1]}</span></div>`).join('')};listen('wc','input',update);update()}}}},
+    {id:'password-generator',name:'Password Generator',category:'Security',description:'Generate strong customizable passwords locally.',tips:['Use 16+ characters for important accounts.','Never reuse passwords across services.'],render(){return{html:card('Password Generator','Create a random password with the character sets you choose.',`<div class="field-row"><div class="field"><label>Length: <span id="pl">20</span></label><input id="plen" type="range" min="6" max="64" value="20"></div></div><div class="check-group"><label><input id="plow" type="checkbox" checked> Lowercase</label><label><input id="pup" type="checkbox" checked> Uppercase</label><label><input id="pnum" type="checkbox" checked> Numbers</label><label><input id="psym" type="checkbox" checked> Symbols</label></div><div class="btn-row"><button class="btn primary" id="pgen">Generate password</button><button class="btn" id="pcopy">Copy password</button></div>${out('pout')}<div class="strength-bar"><div class="strength-fill" id="pbar"></div></div>`),init(){const gen=()=>{let chars='';if(plow.checked)chars+='abcdefghijklmnopqrstuvwxyz';if(pup.checked)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';if(pnum.checked)chars+='0123456789';if(psym.checked)chars+='!@#$%^&*()-_=+[]{}';if(!chars)chars='abcdefghijklmnopqrstuvwxyz';const a=new Uint32Array(+plen.value);crypto.getRandomValues(a);pout.textContent=Array.from(a,n=>chars[n%chars.length]).join('');pbar.style.width=Math.min(100,+plen.value*1.6)+'%';pbar.style.background=+plen.value>=16?'var(--accent)':+plen.value>=10?'var(--warn)':'var(--accent3)'};listen('plen','input',()=>pl.textContent=plen.value);listen('pgen','click',gen);copy('pcopy','pout');gen()}}}},
+    {id:'json-formatter',name:'JSON Formatter & Validator',category:'Developer',description:'Validate, pretty-print, and minify JSON.',tips:['JSON strings and keys use double quotes.','Errors come from the browser JSON parser.'],render(){return{html:card('JSON Formatter & Validator','Format JSON for humans or minify it for APIs.',`<textarea id="ji" placeholder='{"hello":"world"}'></textarea><div class="btn-row"><button class="btn primary" id="jf">Format</button><button class="btn" id="jm">Minify</button><button class="btn" id="jc">Copy result</button></div>${out('jo')}`),init(){const run=space=>{try{jo.textContent=JSON.stringify(JSON.parse(ji.value),null,space);jo.style.color='var(--accent)'}catch(e){jo.textContent='Invalid JSON: '+e.message;jo.style.color='var(--accent3)'}};listen('jf','click',()=>run(2));listen('jm','click',()=>run(0));copy('jc','jo')}}}},
+    {id:'base64',name:'Base64 Encoder / Decoder',category:'Converters',description:'Encode text to Base64 or decode Base64 back to text.',tips:['Useful for small text payloads and data URLs.','Everything stays in your browser.'],render(){return{html:card('Base64 Encoder / Decoder','Convert text to and from Base64 without uploading anything.',`<textarea id="bi" placeholder="Type text or paste Base64 here…"></textarea><div class="btn-row"><button class="btn primary" id="be">Encode</button><button class="btn" id="bd">Decode</button><button class="btn" id="bc">Copy result</button></div>${out('bo')}`),init(){listen('be','click',()=>bo.textContent=btoa(unescape(encodeURIComponent(bi.value))));listen('bd','click',()=>{try{bo.textContent=decodeURIComponent(escape(atob(bi.value.trim())))}catch(e){bo.textContent='Invalid Base64 input.'}});copy('bc','bo')}}}},
+    {id:'case-converter',name:'Case Converter',category:'Writing',description:'Switch text between upper, lower, title, sentence, and kebab case.',tips:['Title case is useful for headings.','Kebab case is common in URLs and CSS classes.'],render(){return{html:card('Case Converter','Transform text into the case style you need.',`<textarea id="ci" placeholder="Paste text here…"></textarea><div class="btn-row"><button class="btn primary" id="cu">UPPERCASE</button><button class="btn" id="cl">lowercase</button><button class="btn" id="ct">Title Case</button><button class="btn" id="cs">Sentence case</button><button class="btn" id="ck">kebab-case</button><button class="btn" id="cc">Copy result</button></div>${out('co')}`),init(){const set=fn=>co.textContent=fn(ci.value);listen('cu','click',()=>set(s=>s.toUpperCase()));listen('cl','click',()=>set(s=>s.toLowerCase()));listen('ct','click',()=>set(s=>s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())));listen('cs','click',()=>set(s=>s.toLowerCase().replace(/(^|[.!?]\s+)\w/g,c=>c.toUpperCase())));listen('ck','click',()=>set(s=>s.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')));copy('cc','co')}}}},
+    {id:'url-tool',name:'URL Encoder / Decoder',category:'Converters',description:'Safely encode query text or decode percent-encoded URLs.',tips:['Encode individual query values with this tool.','Decode copied tracking links to inspect them.'],render(){return{html:card('URL Encoder / Decoder','Encode or decode URL text and query parameters.',`<textarea id="ui" placeholder="https://example.com/?q=hello world"></textarea><div class="btn-row"><button class="btn primary" id="ue">Encode</button><button class="btn" id="ud">Decode</button><button class="btn" id="uc">Copy result</button></div>${out('uo')}`),init(){listen('ue','click',()=>uo.textContent=encodeURIComponent(ui.value));listen('ud','click',()=>{try{uo.textContent=decodeURIComponent(ui.value)}catch(e){uo.textContent='Unable to decode this value.'}});copy('uc','uo')}}}},
+    {id:'uuid-generator',name:'UUID Generator',category:'Developer',description:'Generate one or many cryptographically random UUID v4 values.',tips:['Useful for client-side IDs and test data.','Values are generated with the browser crypto API.'],render(){return{html:card('UUID Generator','Create unique UUID v4 identifiers for development and testing.',`<div class="field-row"><div class="field"><label>How many?</label><input id="un" type="number" min="1" max="50" value="5"></div></div><div class="btn-row"><button class="btn primary" id="ug">Generate UUIDs</button><button class="btn" id="up">Copy list</button></div>${out('uo2')}`),init(){listen('ug','click',()=>uo2.textContent=Array.from({length:Math.min(50,Math.max(1,+un.value||1))},()=>crypto.randomUUID()).join('\n'));copy('up','uo2');ug.click()}}}},
+    {id:'timestamp',name:'Unix Timestamp Converter',category:'Converters',description:'Convert dates to Unix seconds and timestamps to local dates.',tips:['Unix time uses seconds since 1970-01-01 UTC.','Some APIs use milliseconds instead.'],render(){return{html:card('Unix Timestamp Converter','Convert between readable dates and Unix timestamps.',`<div class="field-row"><div class="field"><label>Date and time</label><input id="td" type="datetime-local"></div><div class="field"><label>Unix seconds</label><input id="tn" type="number" placeholder="1710000000"></div></div><div class="btn-row"><button class="btn primary" id="tto">Date → timestamp</button><button class="btn" id="tfrom">Timestamp → date</button></div>${out('to')}`),init(){listen('tto','click',()=>{const d=new Date(td.value);to.textContent=Number.isNaN(d.getTime())?'Choose a date first.':Math.floor(d.getTime()/1000)});listen('tfrom','click',()=>to.textContent=Number.isFinite(+tn.value)?new Date(+tn.value*1000).toString():'Enter a valid timestamp.')}}}},
+    {id:'hash-generator',name:'Text Hash Generator',category:'Security',description:'Create SHA-256, SHA-384, or SHA-512 hashes locally.',tips:['Hashes are fingerprints, not encryption.','SHA-256 is a strong default for integrity checks.'],render(){return{html:card('Text Hash Generator','Hash text locally with the Web Crypto API.',`<textarea id="hi" placeholder="Text to hash…"></textarea><div class="field-row"><div class="field"><label>Algorithm</label><select id="ha"><option>SHA-256</option><option>SHA-384</option><option>SHA-512</option></select></div></div><div class="btn-row"><button class="btn primary" id="hr">Generate hash</button><button class="btn" id="hc">Copy hash</button></div>${out('ho')}`),init(){listen('hr','click',async()=>{const b=await crypto.subtle.digest(ha.value,new TextEncoder().encode(hi.value));ho.textContent=Array.from(new Uint8Array(b),x=>x.toString(16).padStart(2,'0')).join('')});copy('hc','ho')}}}},
+    {id:'lorem',name:'Lorem Ipsum Generator',category:'Writing',description:'Generate placeholder paragraphs, sentences, or words.',tips:['Use paragraphs to prototype layouts.','Generated copy is generic placeholder text.'],render(){return{html:card('Lorem Ipsum Generator','Create placeholder copy for mockups and wireframes.',`<div class="field-row"><div class="field"><label>Amount</label><input id="ln" type="number" min="1" max="30" value="3"></div><div class="field"><label>Type</label><select id="lt"><option value="p">Paragraphs</option><option value="s">Sentences</option><option value="w">Words</option></select></div></div><div class="btn-row"><button class="btn primary" id="lg">Generate text</button><button class="btn" id="lc">Copy text</button></div>${out('lo')}`),init(){const base='lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';listen('lg','click',()=>{const n=Math.min(30,Math.max(1,+ln.value||1)),a=base.split(' ');lo.textContent=lt.value==='w'?Array.from({length:n},(_,i)=>a[i%a.length]).join(' '):lt.value==='s'?Array.from({length:n},(_,i)=>a.slice(i%5,((i%5)+8)).join(' ')+'.').join(' '):Array.from({length:n},()=>base[0].toUpperCase()+base.slice(1)+'.').join('\n\n')});copy('lc','lo');lg.click()}}}},
+    {id:'number-base',name:'Number Base Converter',category:'Converters',description:'Convert decimal, binary, hexadecimal, and octal numbers.',tips:['Prefixes 0x, 0b, and 0o are accepted.','Results are whole-number representations.'],render(){return{html:card('Number Base Converter','Convert a number into four common bases.',`<input id="nb" type="text" placeholder="Enter a number, e.g. 255"><div class="btn-row"><button class="btn primary" id="ng">Convert</button><button class="btn" id="np">Copy results</button></div>${out('no')}`),init(){listen('ng','click',()=>{const r=nb.value.trim();const n=/^0b/i.test(r)?parseInt(r.slice(2),2):/^0x/i.test(r)?parseInt(r.slice(2),16):/^0o/i.test(r)?parseInt(r.slice(2),8):Number(r);no.textContent=Number.isInteger(n)?`Decimal: ${n}\nBinary: ${n.toString(2)}\nOctal: ${n.toString(8)}\nHex: 0x${n.toString(16).toUpperCase()}`:'Enter a valid whole number.'});copy('np','no')}}}},
+    {id:'markdown-preview',name:'Markdown Preview',category:'Writing',description:'Preview common Markdown headings, emphasis, links, and code.',tips:['Supports basic Markdown syntax for quick drafts.','Use blank lines between paragraphs.'],render(){return{html:card('Markdown Preview','Write Markdown on the left and see a live preview.',`<div class="field-row"><div class="field"><label>Markdown</label><textarea id="mi" placeholder="# Hello\n\nWrite **bold** text here."></textarea></div><div class="field"><label>Preview</label><div id="mp" class="preview-box" style="padding:12px"></div></div></div><button class="btn" id="mc">Copy HTML</button>`),init(){const render=()=>{let s=esc(mi.value);s=s.replace(/^### (.*)$/gm,'<h4>$1</h4>').replace(/^## (.*)$/gm,'<h3>$1</h3>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code>$1</code>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');mp.innerHTML=s||'<span style="color:var(--muted)">Preview appears here…</span>'};listen('mi','input',render);listen('mc','click',()=>{navigator.clipboard?.writeText(mp.innerHTML);window.ToolNest.showToast('HTML copied')});render()}}}},
+    {id:'image-data',name:'Image to Data URL',category:'Media',description:'Convert a local image to a Base64 data URL.',tips:['Images stay on your device.','Large data URLs can make HTML files heavy.'],render(){return{html:card('Image to Data URL','Turn a local image into a data URL for HTML or CSS.',`<input id="if" type="file" accept="image/*"><div class="btn-row"><button class="btn primary" id="ir">Convert image</button><button class="btn" id="ic">Copy data URL</button></div>${out('io')}`),init(){listen('ir','click',()=>{const f=document.getElementById('if').files[0];if(!f){io.textContent='Choose an image first.';return}const r=new FileReader();r.onload=()=>io.textContent=r.result;r.readAsDataURL(f)});copy('ic','io')}}}},
+    {id:'html-formatter',name:'HTML Formatter & Minifier',category:'Developer',description:'Beautify messy HTML or compress it for production use.',tips:['Formatting improves readability; minifying reduces transfer size.','This is a lightweight formatter for common HTML snippets.'],render(){return{html:card('HTML Formatter & Minifier','Beautify or minify HTML directly in your browser.',`<textarea id="hmi" placeholder="<div><h1>Hello</h1><p>World</p></div>"></textarea><div class="btn-row"><button class="btn primary" id="hmf">Format HTML</button><button class="btn" id="hmm">Minify HTML</button><button class="btn" id="hmc">Copy result</button></div>${out('hmo')}`),init(){listen('hmf','click',()=>{let x=hmi.value.replace(/>\s*</g,'><').replace(/></g,'>\n<'),depth=0;hmo.textContent=x.split('\n').map(line=>{if(/^<\//.test(line))depth=Math.max(0,depth-1);const out='  '.repeat(depth)+line;if(/^<[^!/][^>]*[^/]?>$/.test(line)&&!/<\/(div|section|p|ul|li|h1|h2|h3|body|html)>/.test(line))depth++;return out}).join('\n')});listen('hmm','click',()=>hmo.textContent=hmi.value.replace(/>\s+</g,'><').replace(/\s{2,}/g,' ').trim());copy('hmc','hmo')}}}},
+    {id:'sql-formatter',name:'SQL Formatter',category:'Developer',description:'Format SQL keywords and clauses into a readable query.',tips:['Review generated SQL before running it.','Formatting does not validate database-specific syntax.'],render(){return{html:card('SQL Formatter','Turn a long SQL statement into a cleaner, easier-to-read query.',`<textarea id="sqi" placeholder="select id,name from users where active=1 order by name;"></textarea><div class="btn-row"><button class="btn primary" id="sqf">Format SQL</button><button class="btn" id="sqc">Copy result</button></div>${out('sqo')}`),init(){listen('sqf','click',()=>{let x=sqi.value.replace(/\s+/g,' ').trim();['SELECT','FROM','WHERE','LEFT JOIN','RIGHT JOIN','INNER JOIN','OUTER JOIN','GROUP BY','ORDER BY','HAVING','LIMIT','VALUES','SET'].forEach(k=>x=x.replace(new RegExp('\\s*'+k+'\\s*','ig'),'\n'+k+' '));sqo.textContent=x.trim()});copy('sqc','sqo')}}}},
+    {id:'jwt-decoder',name:'JWT Decoder',category:'Security',description:'Inspect the header and payload of a JSON Web Token locally.',tips:['Decoding does not verify a token signature.','Never paste production secrets into a shared computer.'],render(){return{html:card('JWT Decoder','Decode the readable portions of a JWT without sending it anywhere.',`<textarea id="jti" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></textarea><div class="btn-row"><button class="btn primary" id="jtd">Decode token</button><button class="btn" id="jtc">Copy result</button></div>${out('jto')}`),init(){listen('jtd','click',()=>{try{const parts=jti.value.trim().split('.');if(parts.length<2)throw Error('A JWT needs at least a header and payload.');const decode=x=>JSON.stringify(JSON.parse(decodeURIComponent(escape(atob(x.replace(/-/g,'+').replace(/_/g,'/'))))),null,2);jto.textContent='HEADER\n'+decode(parts[0])+'\n\nPAYLOAD\n'+decode(parts[1])}catch(e){jto.textContent='Unable to decode JWT: '+e.message}});copy('jtc','jto')}}}},
+    {id:'regex-tester',name:'Regex Tester',category:'Developer',description:'Test a regular expression and inspect every match.',tips:['JavaScript flags include g, i, m, s, and u.','Use anchors like ^ and $ to test complete strings.'],render(){return{html:card('Regex Tester','Try a JavaScript regular expression against sample text.',`<div class="field-row"><div class="field"><label>Pattern</label><input id="rxi" type="text" placeholder="\\b\\w+\\b"></div><div class="field"><label>Flags</label><input id="rxf" type="text" value="gi"></div></div><textarea id="rxt" placeholder="Sample text to test…"></textarea><div class="btn-row"><button class="btn primary" id="rxr">Test regex</button><button class="btn" id="rxc">Copy matches</button></div>${out('rxo')}`),init(){listen('rxr','click',()=>{try{const matches=rxt.value.match(new RegExp(rxi.value,rxf.value));rxo.textContent=matches?`Matches (${matches.length}):\n`+matches.join('\n'):'No matches.'}catch(e){rxo.textContent='Regex error: '+e.message}});copy('rxc','rxo')}}}},
+    {id:'csv-json',name:'CSV ↔ JSON Converter',category:'Converters',description:'Convert simple tabular CSV data to JSON and back.',tips:['The first CSV row becomes the JSON property names.','Best for simple CSV without complex quoted commas.'],render(){return{html:card('CSV ↔ JSON Converter','Move simple table data between CSV and JSON formats.',`<textarea id="cvi" placeholder="name,role\nAda,Engineer"></textarea><div class="btn-row"><button class="btn primary" id="cvj">CSV → JSON</button><button class="btn" id="jvc">JSON → CSV</button><button class="btn" id="cpc">Copy result</button></div>${out('cvo')}`),init(){listen('cvj','click',()=>{const rows=cvi.value.trim().split(/\n/).map(r=>r.split(',').map(c=>c.trim()));if(rows.length<2){cvo.textContent='Add a header row and data rows.';return}cvo.textContent=JSON.stringify(rows.slice(1).map(row=>Object.fromEntries(rows[0].map((h,i)=>[h,row[i]||'']))),null,2)});listen('jvc','click',()=>{try{const a=JSON.parse(cvi.value);if(!Array.isArray(a)||!a.length)throw Error();const h=[...new Set(a.flatMap(x=>Object.keys(x)))];cvo.textContent=[h.join(','),...a.map(x=>h.map(k=>String(x[k]??'').replaceAll(',','\\,')).join(','))].join('\n')}catch(e){cvo.textContent='Expected a JSON array of objects.'}});copy('cpc','cvo')}}}},
+    {id:'color-converter',name:'Color Converter',category:'Design',description:'Convert a color between HEX, RGB, and HSL formats.',tips:['Use the swatch to explore colors visually.','Click the result to copy all color formats.'],render(){return{html:card('Color Converter','Convert CSS colors across popular formats.',`<div class="color-preview" id="ccp"></div><div class="field-row"><div class="field"><label>Pick a color</label><input id="cci" type="color" value="#7cffc4"></div></div><div class="btn-row"><button class="btn" id="ccc">Copy values</button></div>${out('cco')}`),init(){const update=()=>{const h=cci.value,n=parseInt(h.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255,mx=Math.max(r,g,b)/255,mn=Math.min(r,g,b)/255,l=(mx+mn)/2,d=mx-mn,s=d?d/(1-Math.abs(2*l-1)):0;let hue=0;if(d){if(mx===r/255)hue=((g-b)/255/d)%6;else if(mx===g/255)hue=(b/255-r/255)/d+2;else hue=(r/255-g/255)/d+4;hue=Math.round(hue*60);if(hue<0)hue+=360}ccp.style.background=h;cco.textContent=`HEX: ${h}\nRGB: rgb(${r}, ${g}, ${b})\nHSL: hsl(${hue}, ${Math.round(s*100)}%, ${Math.round(l*100)}%)`};listen('cci','input',update);listen('ccc','click',()=>{navigator.clipboard?.writeText(cco.textContent);window.ToolNest.showToast('Color values copied')});update()}}}},
+    {id:'text-diff',name:'Text Difference Checker',category:'Writing',description:'Compare two texts and see added and removed lines.',tips:['Useful for comparing notes, code, or revisions.','Comparison is line-based and runs locally.'],render(){return{html:card('Text Difference Checker','Compare two versions of text line by line.',`<div class="field-row"><div class="field"><label>Original</label><textarea id="d1" placeholder="Original text…"></textarea></div><div class="field"><label>Updated</label><textarea id="d2" placeholder="Updated text…"></textarea></div></div><div class="btn-row"><button class="btn primary" id="dr">Compare texts</button><button class="btn" id="dc">Copy difference</button></div>${out('diffout')}`),init(){listen('dr','click',()=>{const a=d1.value.split('\n'),b=d2.value.split('\n'),setA=new Set(a),setB=new Set(b);diffout.textContent=[...a.filter(x=>!setB.has(x)).map(x=>'- '+x),...b.filter(x=>!setA.has(x)).map(x=>'+ '+x)].join('\n')||'No line differences found.'});copy('dc','diffout')}}}},
+    {id:'percentage-calculator',name:'Percentage Calculator',category:'Calculators',description:'Calculate percentages, changes, discounts, and markups.',tips:['Enter values and choose the calculation you need.','Negative change means the second value is lower.'],render(){return{html:card('Percentage Calculator','Handle common percentage calculations instantly.',`<div class="field-row"><div class="field"><label>Value A</label><input id="pa" type="number" placeholder="100"></div><div class="field"><label>Value B</label><input id="pb" type="number" placeholder="20"></div></div><select id="pm"><option value="of">What is B% of A?</option><option value="change">Percentage change A → B</option><option value="discount">A after B% discount</option><option value="markup">A after B% markup</option></select><div class="btn-row"><button class="btn primary" id="pr">Calculate</button><button class="btn" id="pc">Copy result</button></div>${out('po')}`),init(){listen('pr','click',()=>{const a=+pa.value,b=+pb.value;po.textContent=pm.value==='of'?`${b}% of ${a} = ${a*b/100}`:pm.value==='change'?(a?`Change: ${((b-a)/a*100).toFixed(2)}%`:'Value A cannot be zero.'):pm.value==='discount'?`After discount: ${a-(a*b/100)}`:`After markup: ${a+(a*b/100)}`});copy('pc','po')}}}},
+    {id:'random-data',name:'Random Data Generator',category:'Generators',description:'Generate test names, emails, numbers, and dates for prototypes.',tips:['Generated values are fake test data, not identities.','Use this for mockups, demos, and development fixtures.'],render(){return{html:card('Random Data Generator','Create quick batches of realistic-looking test data.',`<div class="field-row"><div class="field"><label>Rows</label><input id="rdn" type="number" min="1" max="100" value="10"></div><div class="field"><label>Type</label><select id="rdt"><option value="email">Email addresses</option><option value="name">Names</option><option value="number">Numbers</option><option value="date">Dates</option></select></div></div><div class="btn-row"><button class="btn primary" id="rdg">Generate data</button><button class="btn" id="rdc">Copy data</button></div>${out('rdo')}`),init(){const names=['Alex Morgan','Jordan Lee','Taylor Smith','Morgan Patel','Casey Chen','Riley Jones'];listen('rdg','click',()=>{const n=Math.min(100,Math.max(1,+rdn.value||1));rdiffout.textContent=Array.from({length:n},(_,i)=>rdt.value==='email'?`user${i+1}@example.test`:rdt.value==='name'?names[i%names.length]:rdt.value==='number'?Math.floor(Math.random()*90000+10000):new Date(Date.now()-Math.random()*31536000000).toISOString().slice(0,10)).join('\n')});copy('rdc','rdo');rdg.click()}}}}
+
+  ];
+  window.ToolNestTools=tools;
+})();
+
+</script>
+<script>
+(() => {
+  const tools = window.ToolNestTools || [];
+  const byId = (id) => document.getElementById(id);
+  const home = byId('view-home');
+  const toolView = byId('view-tool');
+  const catalog = byId('catalog');
+  const root = byId('tool-root');
+  const search = byId('tool-search');
+  const chips = byId('cat-chips');
+  const tips = byId('tool-tips');
+  let activeCategory = 'All';
+  let toastTimer;
+
+
+  const categories = ['All', ...new Set(tools.map((tool) => tool.category))];
+  chips.innerHTML = categories.map((category) => `<button class="chip ${category === 'All' ? 'active' : ''}" type="button" data-category="${category}">${category}</button>`).join('');
+
+  function renderCatalog() {
+    const query = (search.value || '').trim().toLowerCase();
+    const visible = tools.filter((tool) => {
+      const matchesCategory = activeCategory === 'All' || tool.category === activeCategory;
+      const haystack = `${tool.name} ${tool.description} ${tool.category}`.toLowerCase();
+      return matchesCategory && haystack.includes(query);
+    });
+    catalog.innerHTML = visible.length ? visible.map((tool) => `<a class="catalog-card" href="#${tool.id}" data-tool="${tool.id}"><span class="cat-badge">${tool.category}</span><h3>${tool.name}</h3><p>${tool.description}</p></a>`).join('') : '<div class="catalog-empty">No tools match that search. Try another keyword.</div>';
+  }
+
+  function showToast(message = 'Copied!') {
+    const toast = byId('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  function openTool(id) {
+    const tool = tools.find((item) => item.id === id);
+    if (!tool) return showHome();
+    const rendered = tool.render();
+    root.innerHTML = rendered.html;
+    tips.innerHTML = (tool.tips || []).map((tip) => `<p class="tip">${tip}</p>`).join('');
+    rendered.init?.();
+    home.classList.add('hidden');
+    toolView.classList.remove('hidden');
+    document.title = `${tool.name} — ToolNest`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showHome() {
+    home.classList.remove('hidden');
+    toolView.classList.add('hidden');
+    document.title = 'ToolNest — Free Online Tools for Everyone';
+  }
+
+  document.addEventListener('click', (event) => {
+    const card = event.target.closest('[data-tool]');
+    if (card) {
+      event.preventDefault();
+      location.hash = card.dataset.tool;
+    }
+    const chip = event.target.closest('[data-category]');
+    if (chip) {
+      activeCategory = chip.dataset.category;
+      document.querySelectorAll('.chip').forEach((button) => button.classList.toggle('active', button === chip));
+      renderCatalog();
+    }
+  });
+  search.addEventListener('input', renderCatalog);
+  byId('back-home').addEventListener('click', (event) => { event.preventDefault(); location.hash = ''; });
+  byId('logo-home').addEventListener('click', (event) => { event.preventDefault(); location.hash = ''; });
+  window.addEventListener('hashchange', () => { const id = location.hash.slice(1); id ? openTool(id) : showHome(); });
+  window.ToolNest = { showToast };
+  renderCatalog();
+  if (location.hash) openTool(location.hash.slice(1));
+})();
+
+</script>
+</body>
+</html>
